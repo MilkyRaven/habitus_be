@@ -59,7 +59,7 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next)=> {
         const {title, description, categories, type, image} = req.body;
         const newPost = await Post.create({creator: user, title: title, description: description, categories: categories, type: type, image: image})
         console.log(newPost);
-        res.json("Here you can make a post"); 
+        res.json("Here you can make a post! Awesome, right?"); 
     }
     catch(err) {
         console.log(err)
