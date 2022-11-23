@@ -21,8 +21,18 @@ router.get("/fresh", (req, res, next) => {
     res.json("This is the feed organized by newest posts 🚀");
   });
 
-  //post routes
+router.get("/:postId", async (req, res, next)=> {
+    try{
+        const findPost = await Post.findById(req.params.postId);
+        console.log(findPost);
+        res.json("We are inside this individual post");
+    }
+    catch(err){
+        console.log("Error getting product details:" + err)
+    }
+});
 
+  //post routes
   router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
@@ -35,16 +45,6 @@ router.get("/fresh", (req, res, next) => {
         console.log(err)
     }
   });
-
-
-
-//           const newReview = await Review.create({userId: user, username: user.username, comicId: comicId, title: title, content: description, rating: quantity})
-//           //console.log(newReview)
-//           //average review
-//           res.redirect("/")
-//       }
-//       catch(err){console.log(err)}
-//    })
   
 
 
