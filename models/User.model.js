@@ -34,7 +34,8 @@ const userSchema = new Schema(
     },
 
     goals: {
-      type: String
+      type: String,
+      default: 'No goals set yet'
     },
 
     myPreferences: [{
