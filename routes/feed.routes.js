@@ -23,16 +23,21 @@ router.get("/fresh", (req, res, next) => {
 
   //post routes
 
-  router.post("/new-post", isAuthenticated, (req, res, next) => {
-    console.log(req.payload._id)
-    res.json("Here you can make a post");
+  router.post("/new-post", isAuthenticated, async (req, res, next) => {
+    try {
+        const user = req.payload._id;
+        const {title, description, categories, type, image} = req.body;
+        const newPost = await Post.create({creator: user, title: title, description: description, categories: categories, type: type, image: image})
+        console.log(newPost);
+        res.json("Here you can make a post"); 
+    }
+    catch(err) {
+        console.log(err)
+    }
   });
 
-//   router.post("/:comicId/review/post", isLoggedIn, async(req, res, next) => {
-//     const user = req.session.currentUser
-//     try{
-//           const {comicId} = req.params
-//           const {title, quantity, description} = req.body
+
+
 //           const newReview = await Review.create({userId: user, username: user.username, comicId: comicId, title: title, content: description, rating: quantity})
 //           //console.log(newReview)
 //           //average review
