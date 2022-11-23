@@ -1,8 +1,14 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
+    username: {
+      type: String, 
+      required: [true, "Username is required."],
+      unique: true, 
+      lowercase: true,
+    },
+
     email: {
       type: String,
       required: [true, "Email is required."],
@@ -10,17 +16,53 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+
     password: {
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
-      type: String,
-      required: [true, "Name is required."],
+
+    userStatus: {
+      type: String, 
+      enum: ['Admin', 'Mod', 'Regular'],
+      default: 'Regular', 
     },
+
+    profileImg: {
+      type: String,
+      default: 'https://img.freepik.com/free-vector/organic-flat-people-meditating-illustration_23-2148906556.jpg'
+    },
+
+    myPreferences: [{
+      type: String,
+      enum: ['Health', 'Tech', 'Mindfulness', 'Finances', 'Self Confidence' ] //Cross Check with Posts categories
+    }],
+
+
+    myPosts: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'Post'
+    }],
+      
+
+    mySavedPosts: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'Post'
+    }],
+
+    myComments: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'Comment'
+    }],
+
+    myUpVotes: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'Post'
+    }],
+    
   },
+
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );
