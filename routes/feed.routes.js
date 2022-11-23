@@ -41,7 +41,7 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next)=> {
         console.log(editUser)
     }
     catch(err){
-        console.log("check", err)
+        console.log(err)
     }
 })
 // create a comment
