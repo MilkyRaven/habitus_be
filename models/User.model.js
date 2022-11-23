@@ -38,12 +38,10 @@ const userSchema = new Schema(
       enum: ['Health', 'Tech', 'Mindfulness', 'Finances', 'Self Confidence' ] //Cross Check with Posts categories
     }],
 
-
     myPosts: [{
       type: Schema.Types.ObjectId, 
       ref: 'Post'
     }],
-      
 
     mySavedPosts: [{
       type: Schema.Types.ObjectId, 
