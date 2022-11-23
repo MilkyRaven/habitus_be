@@ -18,15 +18,25 @@ router.get("/", (req, res, next) => {
     res.json("This is my User Profile. 👩‍💻")
 })
 
-// /my-profile/my-posts-library
-router.get("/my-posts-library", (req, res, next) => {
-    res.json("This is my Library. 📚")
+// /my-profile/library
+router.get("/library", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+
+    const findUser = await User.findById(user).populate("mySavedPosts")
+
+    res.json("This is my Library. 📚") // (findUser) to show the populate
 })
 
 // /my-profile/my-inspirers
 router.get("/my-inspirers", (req, res, next) => {
     res.json("These are my Inspirers. 🐼")
 })
+
+
+
+//Post Routes
+
+
 
 
 
