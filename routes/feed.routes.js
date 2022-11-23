@@ -28,9 +28,22 @@ router.get("/:postId", async (req, res, next)=> {
         res.json("We are inside this individual post");
     }
     catch(err){
-        console.log("Error getting product details:" + err)
+        console.log(err)
     }
 });
+
+    //save post
+router.put("/:postId/save", isAuthenticated, async (req, res, next)=> {
+    try{
+        const savedPostId = req.params.postId
+        const user = req.payload._id
+        const editUser = await User.findByIdAndUpdate(user, {$push: {mySavedPosts: savedPostId}}, {new: true})
+        console.log(editUser)
+    }
+    catch(err){
+        console.log(err)
+    }
+})
 
   //post routes
   router.post("/new-post", isAuthenticated, async (req, res, next) => {
