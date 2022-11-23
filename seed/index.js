@@ -16,7 +16,7 @@ const user = [
       password:'123123',
       userStatus: 'Regular',
       profileImg: 'https://thumbs.dreamstime.com/b/cartoon-cute-panda-eating-bamboo-illustration-adorable-cartoon-cute-panda-eating-bamboo-illustration-211793106.jpg',
-      myPreferences: ['Finance', 'Mindfulness', 'Tech'], 
+      myPreferences: ['Finances', 'Mindfulness', 'Tech'], 
       myPosts: [], 
       mySavedPosts: [],
       myComments: [],
@@ -50,56 +50,52 @@ const user = [
    }, 
 ]
 
-
-
-
-
-const post = [
-   {
-      creator:"637e001e16b75b0151326214", //we need user Ids first
-      title: "How I improved my self-confidence through reading",
-      description: "Lorem ipsum",
-      categories: ['Self Confidence'],
-      type: 'Knowledge',
-      upvotes: 0,
-      downvotes: 0,
-      commentsId: []
-   },
-   {
-      creator: "637e001e16b75b0151326214", //we need user Ids first
-      title: "Learn how to save money more efficiently",
-      description: "Lorem ipsum",
-      categories: ['Finances'],
-      type: 'Knowledge',
-      upvotes: 0,
-      downvotes: 0,
-      commentsId: []
-   },
-   {
-      creator: "637e001e16b75b0151326214", //we need user Ids first
-      title: "Climbing and living in the present",
-      description: "Lorem ipsum",
-      categories: ['Health', 'Mindfulness'],
-      type: 'Knowledge',
-      upvotes: 0,
-      downvotes: 0,
-      commentsId: []
-   }
-]
-const comment = [
-   {
-      creator: "637e001e16b75b0151326214", //we need user Id first
-      content: "I really like this post! Thank you!",
-      ofPost: {}, //we need post Id first
-      replies: []
-   },
-   {
-      creator: "637e001e16b75b0151326214", //we need user Id first
-      content: "I would like to add this link to find climbing places",
-      ofPost: {}, //we need post Id first
-      replies: []
-   }
-]
+// const post = [
+//    {
+//       creator:"637e001e16b75b0151326214", //we need user Ids first
+//       title: "How I improved my self-confidence through reading",
+//       description: "Lorem ipsum",
+//       categories: ['Self Confidence'],
+//       type: 'Knowledge',
+//       upvotes: 0,
+//       downvotes: 0,
+//       commentsId: []
+//    },
+//    {
+//       creator: "637e001e16b75b0151326214", //we need user Ids first
+//       title: "Learn how to save money more efficiently",
+//       description: "Lorem ipsum",
+//       categories: ['Finances'],
+//       type: 'Knowledge',
+//       upvotes: 0,
+//       downvotes: 0,
+//       commentsId: []
+//    },
+//    {
+//       creator: "637e001e16b75b0151326214", //we need user Ids first
+//       title: "Climbing and living in the present",
+//       description: "Lorem ipsum",
+//       categories: ['Health', 'Mindfulness'],
+//       type: 'Knowledge',
+//       upvotes: 0,
+//       downvotes: 0,
+//       commentsId: []
+//    }
+// ]
+// const comment = [
+//    {
+//       creator: "637e001e16b75b0151326214", //we need user Id first
+//       content: "I really like this post! Thank you!",
+//       ofPost: {}, //we need post Id first
+//       replies: []
+//    },
+//    {
+//       creator: "637e001e16b75b0151326214", //we need user Id first
+//       content: "I would like to add this link to find climbing places",
+//       ofPost: {}, //we need post Id first
+//       replies: []
+//    }
+// ]
 
 const createSeeds = async function () {
    try {
