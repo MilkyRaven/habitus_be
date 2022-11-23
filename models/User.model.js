@@ -33,6 +33,10 @@ const userSchema = new Schema(
       default: 'https://img.freepik.com/free-vector/organic-flat-people-meditating-illustration_23-2148906556.jpg'
     },
 
+    goals: {
+      type: String
+    },
+
     myPreferences: [{
       type: String,
       enum: ['Health', 'Tech', 'Mindfulness', 'Finances', 'Self Confidence' ] //Cross Check with Posts categories
@@ -57,6 +61,16 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId, 
       ref: 'Post'
     }],
+
+    following: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'User'
+    }],
+
+    followers: [{
+      type: Schema.Types.ObjectId, 
+      ref: 'User'
+    }]
     
   },
 

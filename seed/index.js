@@ -16,11 +16,14 @@ const user = [
       password:'123123',
       userStatus: 'Regular',
       profileImg: 'https://thumbs.dreamstime.com/b/cartoon-cute-panda-eating-bamboo-illustration-adorable-cartoon-cute-panda-eating-bamboo-illustration-211793106.jpg',
+      goals: 'My goal is to learn about managing my finances better.',
       myPreferences: ['Finance', 'Mindfulness', 'Tech'], 
       myPosts: [], 
       mySavedPosts: [],
       myComments: [],
-      myUpVotes: []
+      myUpVotes: [],
+      following: [],
+      followers: []
    }, 
 
    {
@@ -29,11 +32,14 @@ const user = [
       password:'123123',
       userStatus: 'Regular',
       profileImg: 'https://img.freepik.com/free-vector/cute-panda-eating-burger-cartoon-vector-illustration-animal-food-concept-isolated-vector-flat-cartoon-style_138676-1936.jpg',
+      goals: 'I would love to explore and search for other Surfers to improve my skills.',
       myPreferences: ['Health', 'Tech'], 
       myPosts: [], 
       mySavedPosts: [],
       myComments: [],
-      myUpVotes: []
+      myUpVotes: [],
+      following: [],
+      followers: []
    }, 
 
    {
@@ -42,11 +48,14 @@ const user = [
       password:'123123',
       userStatus: 'Regular',
       profileImg: 'https://img.freepik.com/premium-vector/cute-panda-eating-salmon-sushi-with-chopsticks-cartoon-icon-illustration_138676-2667.jpg?w=2000',
+      goals: 'I am looking to improve my inner peace.',
       myPreferences: ['Tech', 'Mindfulness', 'Self Confidence'], 
       myPosts: [], 
       mySavedPosts: [],
       myComments: [],
-      myUpVotes: []
+      myUpVotes: [],
+      following: [],
+      followers: []
    }, 
 ]
 
