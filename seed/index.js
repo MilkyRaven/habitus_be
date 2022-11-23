@@ -8,6 +8,52 @@ const Comment = require("../models/Comment.model")
 const MONGO_URI = "mongodb://localhost:27017/project3"
 
 //User seeds
+
+const user = [
+   {
+      username: 'CreativeCarol',
+      email: 'carol@mail.com',
+      password:'123123',
+      userStatus: 'Regular',
+      profileImg: 'https://thumbs.dreamstime.com/b/cartoon-cute-panda-eating-bamboo-illustration-adorable-cartoon-cute-panda-eating-bamboo-illustration-211793106.jpg',
+      myPreferences: ['Finance', 'Mindfulness', 'Tech'], 
+      myPosts: [], 
+      mySavedPosts: [],
+      myComments: [],
+      myUpVotes: []
+   }, 
+
+   {
+      username: 'ImaginativeIvana',
+      email: 'ivana@mail.com',
+      password:'123123',
+      userStatus: 'Regular',
+      profileImg: 'https://img.freepik.com/free-vector/cute-panda-eating-burger-cartoon-vector-illustration-animal-food-concept-isolated-vector-flat-cartoon-style_138676-1936.jpg',
+      myPreferences: ['Health', 'Tech'], 
+      myPosts: [], 
+      mySavedPosts: [],
+      myComments: [],
+      myUpVotes: []
+   }, 
+
+   {
+      username: 'VersatileVicky',
+      email: 'vicky@mail.com',
+      password:'123123',
+      userStatus: 'Regular',
+      profileImg: 'https://img.freepik.com/premium-vector/cute-panda-eating-salmon-sushi-with-chopsticks-cartoon-icon-illustration_138676-2667.jpg?w=2000',
+      myPreferences: ['Tech', 'Mindfulness', 'Self Confidence'], 
+      myPosts: [], 
+      mySavedPosts: [],
+      myComments: [],
+      myUpVotes: []
+   }, 
+]
+
+
+
+
+
 const post = [
    {
       creator: {}, //we need user Ids first
@@ -60,8 +106,8 @@ const createSeeds = async function () {
       const connect = await mongoose.connect(MONGO_URI)
       console.log(`Connected to database: ${connect.connections[0].name}`)
 
-      // Clear DB,  Example: (-- const deleteAll = await Book.deleteMany() --)
-      // console.log("Db clean")
+      const dbUsers = await User.create(user)
+      console.log(`Users created`)
 
       const dbClose = await mongoose.connection.close()
       console.log("Seeds created")
