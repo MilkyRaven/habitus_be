@@ -10,7 +10,7 @@ const MONGO_URI = "mongodb://localhost:27017/project3"
 //User seeds
 const post = [
    {
-      creator: {}, //we need user Ids first
+      creator:"637e001e16b75b0151326214", //we need user Ids first
       title: "How I improved my self-confidence through reading",
       description: "Lorem ipsum",
       categories: ['Self Confidence'],
@@ -20,7 +20,7 @@ const post = [
       commentsId: []
    },
    {
-      creator: {}, //we need user Ids first
+      creator: "637e001e16b75b0151326214", //we need user Ids first
       title: "Learn how to save money more efficiently",
       description: "Lorem ipsum",
       categories: ['Finances'],
@@ -30,7 +30,7 @@ const post = [
       commentsId: []
    },
    {
-      creator: {}, //we need user Ids first
+      creator: "637e001e16b75b0151326214", //we need user Ids first
       title: "Climbing and living in the present",
       description: "Lorem ipsum",
       categories: ['Health', 'Mindfulness'],
@@ -42,13 +42,13 @@ const post = [
 ]
 const comment = [
    {
-      creator: {}, //we need user Id first
+      creator: "637e001e16b75b0151326214", //we need user Id first
       content: "I really like this post! Thank you!",
       ofPost: {}, //we need post Id first
       replies: []
    },
    {
-      creator: {}, //we need user Id first
+      creator: "637e001e16b75b0151326214", //we need user Id first
       content: "I would like to add this link to find climbing places",
       ofPost: {}, //we need post Id first
       replies: []
