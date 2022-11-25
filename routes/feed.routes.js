@@ -9,7 +9,31 @@ const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
 //get routes
-router.get("/", (req, res, next) => {
+router.get("/", isAuthenticated, async (req, res, next) => {
+    try{
+        
+        //first, we check the user preferences
+        const user = req.payload._id;
+        const findUser = await User.findById(user);
+        const {myPreferences} = findUser
+        // console.log(myPreferences)
+        
+        //then, we find posts related to preferences
+        const findPosts = await Post.find();
+        // console.log(findPosts)
+        findPosts.filter((post)=> {
+            // console.log(post)
+            post.categories.forEach((category)=>
+            { myPreferences.forEach ((preference)=> {
+                if (category === preference){
+                    console.log("Matched!", category, preference)
+                }
+            })
+
+            })
+        })
+    }
+    catch(err) {console.log(err)}
   res.json("This is the feed organized by most popular posts! ⭐️");
 });
 
