@@ -71,8 +71,12 @@ const userSchema = new Schema(
     followers: [{
       type: Schema.Types.ObjectId, 
       ref: 'User'
-    }]
+    }],
     
+    friends: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }]
   },
 
   {
