@@ -10,86 +10,85 @@ const Comment = require("../models/Comment.model")
 
 //get routes
 router.get("/", isAuthenticated, async (req, res, next) => {
-    try{
-        
+    let preferedPosts = [];
+    try {
+
         //first, we check the user preferences
         const user = req.payload._id;
         const findUser = await User.findById(user);
-        const {myPreferences} = findUser
-        // console.log(myPreferences)
-        
+        const { myPreferences } = findUser
+
         //then, we find posts related to preferences
         const findPosts = await Post.find();
-        // console.log(findPosts)
-        findPosts.filter((post)=> {
-            // console.log(post)
-            post.categories.forEach((category)=>
-            { myPreferences.forEach ((preference)=> {
-                if (category === preference){
-                    console.log("Matched!", category, preference)
-                }
-            })
+        findPosts.filter((post) => {
+            post.categories.forEach((category) => {
+                myPreferences.forEach((preference) => {
+                    if (category === preference) {
+                        preferedPosts.push(post);
+                    }
+                })
 
             })
         })
+        console.log(preferedPosts)
     }
-    catch(err) {console.log(err)}
-  res.json("This is the feed organized by most popular posts! ⭐️");
+    catch (err) { console.log(err) }
+    res.json(preferedPosts);
 });
 
 router.get("/following", (req, res, next) => {
     res.json("This is the feed organized by the people you follow 🙌🏼");
-  });
+});
 
 router.get("/fresh", (req, res, next) => {
     res.json("This is the feed organized by newest posts 🚀");
-  });
+});
 
-router.get("/:postId", async (req, res, next)=> {
-    try{
+router.get("/:postId", async (req, res, next) => {
+    try {
         const findPost = await Post.findById(req.params.postId);
         console.log(findPost);
         res.json("We are inside this individual post");
     }
-    catch(err){
+    catch (err) {
         console.log(err)
     }
 });
 
-    //save post
-router.put("/:postId/save", isAuthenticated, async (req, res, next)=> {
-    try{
+//save post
+router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
+    try {
         const savedPostId = req.params.postId
         const user = req.payload._id
-        const editUser = await User.findByIdAndUpdate(user, {$push: {mySavedPosts: savedPostId}}, {new: true})
+        const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } }, { new: true })
         console.log(editUser)
     }
-    catch(err){
+    catch (err) {
         console.log(err)
     }
 })
 // create a comment
-    router.post("/:postId/new-comment", isAuthenticated, async (req, res, next)=> {
-        const {content} = req.body;
-        const postId = req.params.postId;
-        const user = req.payload._id;
-        const newComment = await Comment.create({creator: user, content: content, ofPost: postId})
-        console.log(newComment);
-    })
-  //post routes
-  router.post("/new-post", isAuthenticated, async (req, res, next) => {
+router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
+    const { content } = req.body;
+    const postId = req.params.postId;
+    const user = req.payload._id;
+    const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
+    console.log(newComment);
+})
+//post routes
+router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
-        const {title, description, categories, type, image} = req.body;
-        const newPost = await Post.create({creator: user, title: title, description: description, categories: categories, type: type, image: image})
+        const { title, description, categories, type, image } = req.body;
+        const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image })
         console.log(newPost);
-        res.json("Here you can make a post! Awesome, right?"); 
+        res.json("Here you can make a post! Awesome, right?");
     }
-    catch(err) {
+    catch (err) {
         console.log(err)
     }
-  });
-  
+});
+
 
 
 module.exports = router;
