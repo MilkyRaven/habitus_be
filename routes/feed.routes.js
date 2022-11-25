@@ -47,8 +47,39 @@ router.get("/following", (req, res, next) => {
     res.json("This is the feed organized by the people you follow 🙌🏼");
 });
 
-router.get("/fresh", (req, res, next) => {
-    res.json("This is the feed organized by newest posts 🚀");
+router.get("/fresh", isAuthenticated, async (req, res, next) => {
+    let preferedPosts = [];
+    let sortedPosts;
+    try {
+
+        //first, we check the user preferences
+        const user = req.payload._id;
+        const findUser = await User.findById(user);
+        const { myPreferences } = findUser
+
+        //then, we find posts related to preferences
+        const findPosts = await Post.find();
+        findPosts.filter((post) => {
+            post.categories.forEach((category) => {
+                myPreferences.forEach((preference) => {
+                    if (category === preference) {
+                        preferedPosts.push(post);
+                    }
+                })
+
+            })
+        })
+
+        //then, we sort the post based on date
+        sortedPosts = [...preferedPosts].sort((a, b) => {
+            if (a.createdAt < b.createdAt) return 1;
+            if (a.createdAt > b.createdAt) return -1;
+            return 0;
+        })
+    }
+    catch (err) { console.log(err) }
+
+    res.json(sortedPosts);
 });
 
 router.get("/:postId", async (req, res, next) => {
