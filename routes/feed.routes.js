@@ -43,8 +43,25 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
-router.get("/following", (req, res, next) => {
-    res.json("This is the feed organized by the people you follow 🙌🏼");
+router.get("/following", isAuthenticated, async(req, res, next) => {
+    const user = req.payload._id;
+    const findUser = await User.findById(user);
+    //find friends posts
+    const myFriendsPosts = [];
+    const myFriends = findUser.friends;
+    // let myFriendsPosts =
+    //     myFriends.map(async(friend)=> {
+    //     const findPosts = await Post.find({creator: friend});
+    //     console.log(findPosts)
+    //     return findPosts;
+    // })
+    for (let i = 0; i < myFriends.length; i++){
+        const searchingPosts = await Post.find({creator: myFriends[i]})
+        myFriendsPosts.push(searchingPosts);
+        // console.log(searchingPosts);
+    }
+    // console.log(myFriendsPosts);
+    res.json(myFriendsPosts);
 });
 
 router.get("/fresh", isAuthenticated, async (req, res, next) => {
