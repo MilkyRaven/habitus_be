@@ -36,6 +36,13 @@ router.get("/my-inspirers", (req, res, next) => {
     res.json("These are my Inspirers. 🐼")
 })
 
+// /my-profile/my-friends
+router.get("/my-friends", isAuthenticated, async (req, res, next) => {
+    const user = req.payload;
+    const findUser = await User.findById(user).populate("friends")
+    res.json(findUser)
+})
+
 
 
 //Post Routes
