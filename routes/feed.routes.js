@@ -43,8 +43,31 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
-router.get("/following", (req, res, next) => {
-    res.json("This is the feed organized by the people you follow 🙌🏼");
+router.get("/following", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const findUser = await User.findById(user);
+    //find friends posts
+    const myFriendsPosts = [];
+    const myFriends = findUser.friends;
+
+    for (let i = 0; i < myFriends.length; i++) {
+        const searchingPosts = await Post.find({ creator: myFriends[i] })
+        myFriendsPosts.push(searchingPosts);
+    }
+    //then we sort based on time created
+    const allPosts = [];
+    myFriendsPosts.forEach((friend)=> {
+        friend.forEach((post)=> {
+            allPosts.push(post);
+        })
+    })
+
+    friendSortedPosts = [...allPosts].sort((a, b) => {
+        if (a.createdAt < b.createdAt) return 1;
+        if (a.createdAt > b.createdAt) return -1;
+        return 0;
+    })
+    res.json(friendSortedPosts);
 });
 
 router.get("/fresh", isAuthenticated, async (req, res, next) => {
