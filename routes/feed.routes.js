@@ -43,25 +43,31 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
-router.get("/following", isAuthenticated, async(req, res, next) => {
+router.get("/following", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const findUser = await User.findById(user);
     //find friends posts
     const myFriendsPosts = [];
     const myFriends = findUser.friends;
-    // let myFriendsPosts =
-    //     myFriends.map(async(friend)=> {
-    //     const findPosts = await Post.find({creator: friend});
-    //     console.log(findPosts)
-    //     return findPosts;
-    // })
-    for (let i = 0; i < myFriends.length; i++){
-        const searchingPosts = await Post.find({creator: myFriends[i]})
+
+    for (let i = 0; i < myFriends.length; i++) {
+        const searchingPosts = await Post.find({ creator: myFriends[i] })
         myFriendsPosts.push(searchingPosts);
-        // console.log(searchingPosts);
     }
-    // console.log(myFriendsPosts);
-    res.json(myFriendsPosts);
+    //then we sort based on time created
+    const allPosts = [];
+    myFriendsPosts.forEach((friend)=> {
+        friend.forEach((post)=> {
+            allPosts.push(post);
+        })
+    })
+
+    friendSortedPosts = [...allPosts].sort((a, b) => {
+        if (a.createdAt < b.createdAt) return 1;
+        if (a.createdAt > b.createdAt) return -1;
+        return 0;
+    })
+    res.json(friendSortedPosts);
 });
 
 router.get("/fresh", isAuthenticated, async (req, res, next) => {
