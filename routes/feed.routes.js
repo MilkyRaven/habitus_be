@@ -11,6 +11,7 @@ const Comment = require("../models/Comment.model")
 //get routes
 router.get("/", isAuthenticated, async (req, res, next) => {
     let preferedPosts = [];
+    let sortedPosts;
     try {
 
         //first, we check the user preferences
@@ -30,10 +31,16 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 
             })
         })
-        console.log(preferedPosts)
+
+        //then, we sort the post based on ranking
+        sortedPosts = [...preferedPosts].sort((a, b) => {
+            if (a.ranking < b.ranking) return 1;
+            if (a.ranking > b.ranking) return -1;
+            return 0;
+        })
     }
     catch (err) { console.log(err) }
-    res.json(preferedPosts);
+    res.json(sortedPosts);
 });
 
 router.get("/following", (req, res, next) => {

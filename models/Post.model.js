@@ -34,6 +34,10 @@ const postSchema = new Schema(
         type: Number,
         default: 0
     },
+    ranking : {
+      type: Number,
+      default: 0
+    },
     commentsId: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
   },
   {
