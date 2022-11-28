@@ -27,6 +27,9 @@ app.use("/api/feed", feedRoutes);
 const userProfileRoutes = require("./routes/userProfile.routes");
 app.use("/api/my-profile", userProfileRoutes);
 
+const userRoutes = require("./routes/users.routes");
+app.use("/api/user", userRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
