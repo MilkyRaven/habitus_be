@@ -13,7 +13,7 @@ const Comment = require("../models/Comment.model")
 //get public info about user profile
 router.get("/:userId", async (req, res, next) => {
     try {
-        const findUser = await User.findById(req.params.userId);
+        const findUser = await User.findById(req.params.userId).populate("myPosts");
         console.log(findUser);
         res.json(findUser);
     }
