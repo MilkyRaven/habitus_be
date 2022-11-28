@@ -65,6 +65,8 @@ router.get("/my-friends", isAuthenticated, async (req, res, next) => {
 
 
 
+
+
 //Post Routes
 
 
@@ -93,6 +95,18 @@ router.put("/library/:postId/delete", isAuthenticated, async (req, res, next) =>
     console.log(editUser)
 
     res.json("You have unsaved a post")
+})
+
+// delete current user's posts:
+// my-profile/:postId/delete
+
+router.put("/:postId/delete", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const postId = req.params.postId;
+    const editUser = await User.findByIdAndUpdate(user, {$pull: {myPosts: postId }})
+    console.log(editUser)
+
+    res.json("You have deleted a post")
 })
 
 
