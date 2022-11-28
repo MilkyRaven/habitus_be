@@ -22,13 +22,27 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(findUser)
 })
 
+// /my-profile/myposts
+router.get("/my-posts", isAuthenticated, async (req, res, next) => {
+    try {
+        const user = req.payload._id;
+        const findUser = await User.findById(user).populate("myPosts")
+        const myPostsArray = findUser.myPosts; 
+        console.log(findUser)
+        res.json(myPostsArray);
+    }
+    catch(err){console.log(err)}
+})
+
 // /my-profile/library
 router.get("/library", isAuthenticated, async (req, res, next) => {
-    const user = req.payload._id;
-
-    const findUser = await User.findById(user).populate("mySavedPosts")
-
-    res.json("This is my Library. 📚") // (findUser) to show the populate
+    try {
+        const user = req.payload._id;
+        const findUser = await User.findById(user).populate("mySavedPosts")
+        const mySavedPosts = findUser.mySavedPosts;
+        res.json(mySavedPosts)   
+    }
+    catch(err){console.log(err)}
 })
 
 // /my-profile/my-inspirers
