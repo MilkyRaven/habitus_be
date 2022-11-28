@@ -31,21 +31,27 @@ router.put("/:userId/set-following", isAuthenticated, async (req, res, next) => 
     const findUser = await User.findById(user)
     const following = findUser.following 
     if (!following.includes(userToFollow) ){
-        const editUser = await User.findByIdAndUpdate(user, { $push: { following: userToFollow} })
+        await User.findByIdAndUpdate(user, { $push: { following: userToFollow} })
     }   else {
-        const editUser = await User.findByIdAndUpdate(user, { $pull: { following: userToFollow} })
+        await User.findByIdAndUpdate(user, { $pull: { following: userToFollow} })
     } 
     
      res.json(findUser)
 })
 
 // /set follower - visited user gets active user added to Follower-Array
-router.put("/:userId/set-follwer", isAuthenticated, async (req, res, next) => {
+router.put("/:userId/set-follower", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
-    const { email, password, profileImg, goals, myPreferences } = req.body;
+    const userToFollow =req.params.userId 
 
-    const editUser = await User.findByIdAndUpdate(user, {email: email, password: password, profileImg: profileImg, goals: goals, myPreferences: myPreferences})
-    console.log(editUser)
+    const findUser = await User.findById(userToFollow)
+    const follower = findUser.followers 
+
+    if (!follower.includes(user) ){
+        await User.findByIdAndUpdate(userToFollow, { $push: { followers: user} })
+    }   else {
+        await User.findByIdAndUpdate(userToFollow, { $pull: { followers: user} })
+    } 
 
     res.json(findUser)
 }) 
