@@ -84,6 +84,17 @@ router.put("/edit", isAuthenticated, async (req, res, next) => {
     res.json("You can edit your profile here. 📝")
 })
 
+// my-profile/library/:postId/delete
+
+router.put("/library/:postId/delete", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const postId = req.params.postId;
+    const editUser = await User.findByIdAndUpdate(user, {$pull: {mySavedPosts: postId }})
+    console.log(editUser)
+
+    res.json("You have unsaved a post")
+})
+
 
 
 
