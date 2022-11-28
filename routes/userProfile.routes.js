@@ -14,8 +14,12 @@ const Comment = require("../models/Comment.model")
 //Get Routes
 
 // /my-profile/
-router.get("/", (req, res, next) => {
-    res.json("This is my User Profile. 👩‍💻")
+router.get("/", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+
+    const findUser = await User.findById(user)
+
+    res.json(findUser)
 })
 
 // /my-profile/myposts
@@ -52,6 +56,12 @@ router.get("/my-friends", isAuthenticated, async (req, res, next) => {
     const findUser = await User.findById(user).populate("friends")
     res.json(findUser)
 })
+
+
+
+//Post Routes
+
+
 
 
 
