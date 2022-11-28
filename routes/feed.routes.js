@@ -20,7 +20,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
         const { myPreferences } = findUser
 
         //then, we find posts related to preferences
-        const findPosts = await Post.find();
+        const findPosts = await Post.find().populate("creator");
         findPosts.filter((post) => {
             post.categories.forEach((category) => {
                 myPreferences.forEach((preference) => {
@@ -51,7 +51,7 @@ router.get("/following", isAuthenticated, async (req, res, next) => {
     const myFriends = findUser.friends;
 
     for (let i = 0; i < myFriends.length; i++) {
-        const searchingPosts = await Post.find({ creator: myFriends[i] })
+        const searchingPosts = await Post.find({ creator: myFriends[i] }).populate("creator")
         myFriendsPosts.push(searchingPosts);
     }
     //then we sort based on time created
@@ -81,7 +81,7 @@ router.get("/fresh", isAuthenticated, async (req, res, next) => {
         const { myPreferences } = findUser
 
         //then, we find posts related to preferences
-        const findPosts = await Post.find();
+        const findPosts = await Post.find().populate("creator");
         findPosts.filter((post) => {
             post.categories.forEach((category) => {
                 myPreferences.forEach((preference) => {
