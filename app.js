@@ -15,6 +15,7 @@ const app = express();
 require("./config")(app);
 
 // 👇 Start handling routes here
+
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
@@ -27,8 +28,8 @@ app.use("/api/feed", feedRoutes);
 const userProfileRoutes = require("./routes/userProfile.routes");
 app.use("/api/my-profile", userProfileRoutes);
 
-/* const uploadRoutes = require("./routes/upload.routes");
-app.use("/api/upload", uploadRoutes);*/
+const uploadRoutes = require("./routes/upload.routes");
+app.use("/api/upload", uploadRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
