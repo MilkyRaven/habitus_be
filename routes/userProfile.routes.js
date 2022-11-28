@@ -38,7 +38,13 @@ router.get("/my-posts", isAuthenticated, async (req, res, next) => {
 router.get("/library", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
-        const findUser = await User.findById(user).populate("mySavedPosts")
+        const findUser = await User.findById(user).populate("mySavedPosts").populate({
+            path: "mySavedPosts",
+            populate: {
+                path: "creator",
+                model: "User"
+            }
+        });
         const mySavedPosts = findUser.mySavedPosts;
         res.json(mySavedPosts)   
     }
