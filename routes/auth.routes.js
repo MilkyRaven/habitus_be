@@ -24,10 +24,10 @@ router.post("/signup", (req, res, next) => {
   if (email === "" || password === "" || username === "") {
     res.status(400).json({ message: "Provide email, password and name" });
     return;
-  }
+  } 
 
   // This regular expression check that the email is of a valid format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if (!emailRegex.test(email)) {
     res.status(400).json({ message: "Provide a valid email address." });
     return;
@@ -44,6 +44,7 @@ router.post("/signup", (req, res, next) => {
   }
 
   // Check the users collection if a user with the same email already exists
+  
   User.findOne({ email })
     .then((foundUser) => {
       // If the user with the same email already exists, send an error response
@@ -55,7 +56,7 @@ router.post("/signup", (req, res, next) => {
       // If email is unique, proceed to hash the password
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashedPassword = bcrypt.hashSync(password, salt);
-
+ 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
       return User.create({ email, password: hashedPassword, username });
@@ -72,7 +73,7 @@ router.post("/signup", (req, res, next) => {
       res.status(201).json({ user: user });
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
-});
+ }); 
 
 // POST  /auth/login - Verifies email and password and returns a JWT
 router.post("/login", (req, res, next) => {
