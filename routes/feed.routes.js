@@ -116,6 +116,7 @@ router.get("/:postId", async (req, res, next) => {
     }
 });
 
+
 //save post
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
@@ -128,6 +129,7 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
         console.log(err)
     }
 })
+
 // create a comment
 router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const { content } = req.body;
@@ -136,6 +138,7 @@ router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
     console.log(newComment);
 })
+
 //post routes
 router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
