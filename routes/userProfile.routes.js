@@ -103,6 +103,7 @@ router.put("/library/:postId/delete", isAuthenticated, async (req, res, next) =>
 router.put("/:postId/delete", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const postId = req.params.postId;
+    const deletePost = await Post.findByIdAndDelete(postId);
     const editUser = await User.findByIdAndUpdate(user, {$pull: {myPosts: postId }})
     console.log(editUser)
 
