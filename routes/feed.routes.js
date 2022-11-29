@@ -162,8 +162,8 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
         const { title, description, categories, type, image } = req.body;
-        const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image })
-        console.log(newPost);
+        const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image });
+        await User.findByIdAndUpdate(user, { $push: { myPosts: newPost._id} })
         res.json("Here you can make a post! Awesome, right?");
     }
     catch (err) {
