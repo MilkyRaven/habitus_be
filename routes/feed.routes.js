@@ -119,7 +119,6 @@ router.get("/:postId", async (req, res, next) => {
               model: 'User',
             }
           })
-        // console.log(findPost);
         res.json(findPost);
     }
     catch (err) {
@@ -150,18 +149,10 @@ router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const postId = req.params.postId;
     const user = req.payload._id;
     const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
-    console.log(newComment);
-})
-// reply a comment
-router.post("/:postId/:commentId/new-comment", isAuthenticated, async (req, res, next) => {
-    const { content } = req.body;
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
-    const user = req.payload._id;
-    const newReply = await Comment.create({ creator: user, content: content, ofPost: postId, ofComment: commentId})
-    const editComment = await Comment.findByIdAndUpdate(commentId, {$push: {replies: newReply._id}});
-    console.log(newReply);
-})
+    const editPost = await Post.findByIdAndUpdate(postId, {$push: {commentsId: newComment._id}}, {new: true})
+    console.log(editPost);
+    res.json(newComment)
+});
 
 //create a new post
 router.post("/new-post", isAuthenticated, async (req, res, next) => {
@@ -177,6 +168,18 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
     }
 });
 
+//DELETE routes
+
+router.delete("/:postId/:commentId/delete", isAuthenticated, async (req, res, next) => {
+    try {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
+        await Comment.findByIdAndDelete(commentId);
+    } catch (error) {
+        console.log(error);
+    }
+    res.json("deleted")
+})
 
 
 module.exports = router;
