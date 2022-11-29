@@ -38,7 +38,13 @@ router.get("/my-posts", isAuthenticated, async (req, res, next) => {
 router.get("/library", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
-        const findUser = await User.findById(user).populate("mySavedPosts")
+        const findUser = await User.findById(user).populate("mySavedPosts").populate({
+            path: "mySavedPosts",
+            populate: {
+                path: "creator",
+                model: "User"
+            }
+        });
         const mySavedPosts = findUser.mySavedPosts;
         res.json(mySavedPosts)   
     }
@@ -59,6 +65,8 @@ router.get("/my-friends", isAuthenticated, async (req, res, next) => {
 
 
 
+
+
 //Post Routes
 
 
@@ -76,6 +84,30 @@ router.put("/edit", isAuthenticated, async (req, res, next) => {
     console.log(editUser)
 
     res.json("You can edit your profile here. 📝")
+})
+
+// my-profile/library/:postId/delete
+
+router.put("/library/:postId/delete", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const postId = req.params.postId;
+    const editUser = await User.findByIdAndUpdate(user, {$pull: {mySavedPosts: postId }})
+    console.log(editUser)
+
+    res.json("You have unsaved a post")
+})
+
+// delete current user's posts:
+// my-profile/:postId/delete
+
+router.put("/:postId/delete", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const postId = req.params.postId;
+    const deletePost = await Post.findByIdAndDelete(postId);
+    const editUser = await User.findByIdAndUpdate(user, {$pull: {myPosts: postId }})
+    console.log(editUser)
+
+    res.json("You have deleted a post")
 })
 
 
