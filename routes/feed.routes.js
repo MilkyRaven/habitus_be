@@ -174,11 +174,11 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
 
 //DELETE routes
 
-router.delete("/:postId/:commentId/delete", isAuthenticated, async (req, res, next) => {
+router.delete("/:commentId/delete", isAuthenticated, async (req, res, next) => {
     try {
-        const postId = req.params.postId;
         const commentId = req.params.commentId;
         await Comment.findByIdAndDelete(commentId);
+        //console.log(commentId)
     } catch (error) {
         console.log(error);
     }
