@@ -112,7 +112,13 @@ router.get("/fresh", isAuthenticated, async (req, res, next) => {
 //Post Details
 router.get("/:postId", async (req, res, next) => {
     try {
-        const findPost = await Post.findById(req.params.postId).populate("creator");
+        const findPost = await Post.findById(req.params.postId).populate("creator").populate("commentsId").populate({
+            path: 'commentsId',
+            populate: {
+              path: 'creator',
+              model: 'User',
+            }
+          })
         // console.log(findPost);
         res.json(findPost);
     }
