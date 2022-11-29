@@ -12,6 +12,9 @@ const commentSchema = new Schema(
     ofPost: {
       type: Schema.Types.ObjectId, ref: 'Post' 
     },
+    ofComment: {
+      type: Schema.Types.ObjectId, ref: 'Comment' 
+    },
     replies: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
   },
   {

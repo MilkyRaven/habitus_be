@@ -28,7 +28,6 @@ app.use("/api/feed", feedRoutes);
 const userProfileRoutes = require("./routes/userProfile.routes");
 app.use("/api/my-profile", userProfileRoutes);
 
-
 const uploadRoutes = require("./routes/upload.routes");
 app.use("/api/upload", uploadRoutes);
 

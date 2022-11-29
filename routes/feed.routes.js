@@ -8,7 +8,9 @@ const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
-//get routes
+//GET routes
+
+// >> Most Popular Posts
 router.get("/", isAuthenticated, async (req, res, next) => {
     let preferedPosts = [];
     let sortedPosts;
@@ -43,6 +45,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
+// >> People we follow Posts
 router.get("/following", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const findUser = await User.findById(user);
@@ -70,6 +73,7 @@ router.get("/following", isAuthenticated, async (req, res, next) => {
     res.json(friendSortedPosts);
 });
 
+// >> Newest Posts
 router.get("/fresh", isAuthenticated, async (req, res, next) => {
     let preferedPosts = [];
     let sortedPosts;
@@ -105,19 +109,23 @@ router.get("/fresh", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
+//Post Details
 router.get("/:postId", async (req, res, next) => {
     try {
-        const findPost = await Post.findById(req.params.postId);
-        console.log(findPost);
-        res.json("We are inside this individual post");
+        const findPost = await Post.findById(req.params.postId).populate("creator");
+        // console.log(findPost);
+        res.json(findPost);
     }
     catch (err) {
         console.log(err)
     }
 });
 
+//PUT routes
 
-//save post4xwt
+
+//Save post
+
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
@@ -130,7 +138,9 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     }
 })
 
-// create a comment
+//POST routes
+
+// create a comment on a post
 router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const { content } = req.body;
     const postId = req.params.postId;
@@ -138,8 +148,18 @@ router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
     console.log(newComment);
 })
+// reply a comment
+router.post("/:postId/:commentId/new-comment", isAuthenticated, async (req, res, next) => {
+    const { content } = req.body;
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+    const user = req.payload._id;
+    const newReply = await Comment.create({ creator: user, content: content, ofPost: postId, ofComment: commentId})
+    const editComment = await Comment.findByIdAndUpdate(commentId, {$push: {replies: newReply._id}});
+    console.log(newReply);
+})
 
-//post routes
+//create a new post
 router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
