@@ -178,7 +178,7 @@ router.delete("/:commentId/delete", isAuthenticated, async (req, res, next) => {
     try {
         const commentId = req.params.commentId;
         await Comment.findByIdAndDelete(commentId);
-        //console.log(commentId)
+        //console.log(commentId) 
     } catch (error) {
         console.log(error);
     }
