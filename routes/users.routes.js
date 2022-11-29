@@ -11,11 +11,16 @@ const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
 //get public info about user profile
-router.get("/:userId", async (req, res, next) => {
+router.get("/:userId", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+
     try {
         const findUser = await User.findById(req.params.userId).populate("myPosts");
         console.log(findUser);
         res.json(findUser);
+        const findMe = await User.findById(user);
+        console.log(findMe);
+        res.json(findMe);
     }
     catch (err) {
         console.log(err)
