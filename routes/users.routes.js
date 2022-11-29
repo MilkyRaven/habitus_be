@@ -18,9 +18,6 @@ router.get("/:userId", isAuthenticated, async (req, res, next) => {
         const findUser = await User.findById(req.params.userId).populate("myPosts");
         console.log(findUser);
         res.json(findUser);
-        const findMe = await User.findById(user);
-        console.log(findMe);
-        res.json(findMe);
     }
     catch (err) {
         console.log(err)
@@ -59,6 +56,28 @@ router.put("/:userId/set-follower", isAuthenticated, async (req, res, next) => {
     } 
 
     res.json(findUser)
+}) 
+
+// /follow
+router.put("/:userId/follow", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const userToFollow =req.params.userId 
+
+    const currentUserData = await User.findByIdAndUpdate(user, { $push: { following: userToFollow} })
+    const userData = await User.findByIdAndUpdate(userToFollow, { $push: { followers: user} })
+    
+     res.json({currentUserData, userData})
+})
+
+// /unfollow
+router.put("/:userId/unfollow", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+    const userToFollow =req.params.userId 
+
+    const currentUserData = await User.findByIdAndUpdate(user, { $pull: { following: userToFollow} })
+    const userData = await User.findByIdAndUpdate(userToFollow, { $pull: { followers: user} })
+
+    res.json({currentUserData, userData}) 
 }) 
 
 
