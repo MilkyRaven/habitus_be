@@ -130,13 +130,23 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     }
 })
 
-// create a comment
+// create a comment on a post
 router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const { content } = req.body;
     const postId = req.params.postId;
     const user = req.payload._id;
     const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
     console.log(newComment);
+})
+// reply a comment
+router.post("/:postId/:commentId/new-comment", isAuthenticated, async (req, res, next) => {
+    const { content } = req.body;
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+    const user = req.payload._id;
+    const newReply = await Comment.create({ creator: user, content: content, ofPost: postId, ofComment: commentId})
+    const editComment = await Comment.findByIdAndUpdate(commentId, {$push: {replies: newReply._id}});
+    console.log(newReply);
 })
 
 //post routes
