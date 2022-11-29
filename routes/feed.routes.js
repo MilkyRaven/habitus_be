@@ -128,7 +128,9 @@ router.get("/:postId", async (req, res, next) => {
 
 //PUT routes
 
+
 //Save post
+
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
@@ -160,7 +162,9 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
         const user = req.payload._id;
         const { title, description, categories, type, image } = req.body;
         const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image });
-        await User.findByIdAndUpdate(user, { $push: { myPosts: newPost._id} })
+        const postId = newPost._id;
+        const editUser = await User.findByIdAndUpdate(user, { $push: { myPosts: postId}})
+        console.log(newPost);
         res.json("Here you can make a post! Awesome, right?");
     }
     catch (err) {
