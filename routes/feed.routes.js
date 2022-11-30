@@ -45,13 +45,24 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
+// >> All posts
+router.get("/all", isAuthenticated, async (req, res, next) => {
+    try {
+        const findAllPosts = await Post.find().populate("creator");
+        res.json(findAllPosts);
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 // >> People we follow Posts
 router.get("/following", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const findUser = await User.findById(user);
-    //find friends posts
+    //find people we follow posts
     const myFriendsPosts = [];
-    const myFriends = findUser.friends;
+    const myFriends = findUser.following;
 
     for (let i = 0; i < myFriends.length; i++) {
         const searchingPosts = await Post.find({ creator: myFriends[i] }).populate("creator")
