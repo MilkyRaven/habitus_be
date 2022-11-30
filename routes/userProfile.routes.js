@@ -78,12 +78,12 @@ router.get("/my-friends", isAuthenticated, async (req, res, next) => {
 // /my-profile/edit
 router.put("/edit", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
-    const { email, password, profileImg, goals, myPreferences } = req.body;
+    const { email, username, password, profileImg, goals, myPreferences } = req.body;
 
-    const editUser = await User.findByIdAndUpdate(user, {email: email, password: password, profileImg: profileImg, goals: goals, myPreferences: myPreferences})
+    const editUser = await User.findByIdAndUpdate(user, {email: email, username: username, password: password, profileImg: profileImg, goals: goals, myPreferences: myPreferences})
     console.log(editUser)
 
-    res.json("You can edit your profile here. 📝")
+    res.json(editUser)
 })
 
 // my-profile/library/:postId/delete
