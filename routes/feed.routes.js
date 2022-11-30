@@ -45,6 +45,17 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     res.json(sortedPosts);
 });
 
+// >> All posts
+router.get("/all", isAuthenticated, async (req, res, next) => {
+    try {
+        const findAllPosts = await Post.find();
+        res.json(findAllPosts);
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 // >> People we follow Posts
 router.get("/following", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
