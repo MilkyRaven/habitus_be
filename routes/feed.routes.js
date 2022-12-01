@@ -40,9 +40,10 @@ router.get("/", isAuthenticated, async (req, res, next) => {
             if (a.ranking > b.ranking) return -1;
             return 0;
         })
+        const uniqueArray = [...new Set(sortedPosts)];
+        res.json(uniqueArray);
     }
     catch (err) { console.log(err) }
-    res.json(sortedPosts);
 });
 
 // >> All posts
@@ -87,7 +88,8 @@ router.get("/following", isAuthenticated, async (req, res, next) => {
         if (a.createdAt > b.createdAt) return -1;
         return 0;
     })
-    res.json(friendSortedPosts);
+    const uniqueArray = [...new Set(friendSortedPosts)];
+    res.json(uniqueArray);
 });
 
 // >> Newest Posts
@@ -120,10 +122,12 @@ router.get("/fresh", isAuthenticated, async (req, res, next) => {
             if (a.createdAt > b.createdAt) return -1;
             return 0;
         })
+
+        //then we delete duplicates
+        const uniqueArray = [...new Set(sortedPosts)];
+        res.json(uniqueArray);
     }
     catch (err) { console.log(err) }
-
-    res.json(sortedPosts);
 });
 
 //Post Details
