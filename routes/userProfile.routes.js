@@ -8,7 +8,6 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const User = require("../models/User.model")
 const Post = require("../models/Post.model")
-const Comment = require("../models/Comment.model")
 
 
 //Get Routes
@@ -28,7 +27,6 @@ router.get("/my-posts", isAuthenticated, async (req, res, next) => {
         const user = req.payload._id;
         const findUser = await User.findById(user).populate("myPosts")
         const myPostsArray = findUser.myPosts; 
-        console.log(findUser)
         res.json(myPostsArray);
     }
     catch(err){console.log(err)}
@@ -51,27 +49,6 @@ router.get("/library", isAuthenticated, async (req, res, next) => {
     catch(err){console.log(err)}
 })
 
-// /my-profile/my-inspirers
-router.get("/my-inspirers", (req, res, next) => {
-    res.json("These are my Inspirers. 🐼")
-})
-
-// /my-profile/my-friends
-router.get("/my-friends", isAuthenticated, async (req, res, next) => {
-    const user = req.payload;
-    const findUser = await User.findById(user).populate("friends")
-    res.json(findUser)
-})
-
-
-
-
-
-//Post Routes
-
-
-
-
 
 //Put Routes 
 
@@ -81,7 +58,6 @@ router.put("/edit", isAuthenticated, async (req, res, next) => {
     const { email, username, password, profileImg, goals, myPreferences } = req.body;
 
     const editUser = await User.findByIdAndUpdate(user, {email: email, username: username, password: password, profileImg: profileImg, goals: goals, myPreferences: myPreferences})
-    console.log(editUser)
 
     res.json(editUser)
 })
@@ -92,12 +68,10 @@ router.put("/library/:postId/delete", isAuthenticated, async (req, res, next) =>
     const user = req.payload._id;
     const postId = req.params.postId;
     const editUser = await User.findByIdAndUpdate(user, {$pull: {mySavedPosts: postId }})
-    console.log(editUser)
 
     res.json("You have unsaved a post")
 })
 
-// delete current user's posts:
 // my-profile/:postId/delete
 
 router.put("/:postId/delete", isAuthenticated, async (req, res, next) => {
@@ -105,15 +79,9 @@ router.put("/:postId/delete", isAuthenticated, async (req, res, next) => {
     const postId = req.params.postId;
     const deletePost = await Post.findByIdAndDelete(postId);
     const editUser = await User.findByIdAndUpdate(user, {$pull: {myPosts: postId }})
-    console.log(editUser)
 
     res.json("You have deleted a post")
 })
-
-
-
-
-
 
 
 module.exports = router;
