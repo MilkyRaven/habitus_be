@@ -27,13 +27,21 @@ const postSchema = new Schema(
         default: ""
     },
     upvotes: {
+      type:[{ type: Schema.Types.ObjectId, ref: 'User'}],
+        default: []
+  },
+    downvotes: {
+      type:[{ type: Schema.Types.ObjectId, ref: 'User'}],
+        default: []
+  }, 
+    /* upvotes: {
         type: Number,
         default: 0
     },
     downvotes: {
         type: Number,
         default: 0
-    },
+    }, */
     ranking : {
       type: Number,
       default: 0
