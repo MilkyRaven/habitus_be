@@ -17,11 +17,6 @@ const postSchema = new Schema(
       required: [true, "You must select a category."],
       enum: ['Mindfulness', 'Finances', 'Health', 'Tech', 'Self Confidence']
     }],
-    type: {
-        type: String,
-        required: [true, "You must select a type of post"],
-        enum: ['Meeting', 'Knowledge']
-    },
     image: {
         type: String,
         default: ""
@@ -34,14 +29,6 @@ const postSchema = new Schema(
       type:[{ type: Schema.Types.ObjectId, ref: 'User'}],
         default: []
   }, 
-    /* upvotes: {
-        type: Number,
-        default: 0
-    },
-    downvotes: {
-        type: Number,
-        default: 0
-    }, */
     ranking : {
       type: Number,
       default: 0
