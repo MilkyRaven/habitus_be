@@ -49,7 +49,13 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.get("/all", isAuthenticated, async (req, res, next) => {
     try {
         const findAllPosts = await Post.find().populate("creator");
-        res.json(findAllPosts);
+        
+        allSortedPosts = [...findAllPosts].sort((a, b) => {
+            if (a.createdAt < b.createdAt) return 1;
+            if (a.createdAt > b.createdAt) return -1;
+            return 0;
+        })
+        res.json(allSortedPosts);
     } catch (error) {
         console.log(error)
     }
