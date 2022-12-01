@@ -149,7 +149,7 @@ router.put("/:userId/set-follower", isAuthenticated, async (req, res, next) => {
 router.put("/:userId/follow", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const userToFollow = req.params.userId
-
+    
     const currentUserData = await User.findByIdAndUpdate(user, { $push: { following: userToFollow } })
     const userData = await User.findByIdAndUpdate(userToFollow, { $push: { followers: user } })
 
@@ -166,9 +166,6 @@ router.put("/:userId/unfollow", isAuthenticated, async (req, res, next) => {
 
     res.json({ currentUserData, userData })
 })
-
-
-
 
 
 module.exports = router;
