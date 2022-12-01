@@ -145,15 +145,12 @@ router.get("/:postId", async (req, res, next) => {
 
 //PUT routes
 
-//Save post
+//>>Save post
 
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
         const user = req.payload._id
-        //if(user.mySavedPosts.includes(savedPostId)) {
-            //res.json("already saved") }
-        //await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
         const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } })
         res.json(editUser)
     }
@@ -168,7 +165,7 @@ router.put("/:postId/unsave", isAuthenticated, async (req, res, next) => {
         const savedPostId = req.params.postId
         const user = req.payload._id
         const editUser = await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
-        console.log(editUser)
+        res.json(editUser);
     }
     catch (err) {
         console.log(err)
@@ -180,12 +177,10 @@ router.put("/:postId/upvote", isAuthenticated, async (req, res, next) => {
     try {
         const postId = req.params.postId
         const user = req.payload._id
-        //await Post.findByIdAndUpdate(postId, { $pull: { upvotes: user} })
 
         const findPost = await Post.findById(postId);
         if (findPost.upvotes.indexOf(user) == -1) {
         const editPost = await Post.findByIdAndUpdate(postId, { $push: { upvotes: user} })
-        console.log(editPost)
         res.json(editPost);
         }
     }
@@ -199,12 +194,10 @@ router.put("/:postId/downvote", isAuthenticated, async (req, res, next) => {
     try {
         const postId = req.params.postId
         const user = req.payload._id
-        //await Post.findByIdAndUpdate(postId, { $pull: { downvotes: user} })
 
         const findPost = await Post.findById(postId);
         if (findPost.downvotes.indexOf(user) == -1) {
         const editPost = await Post.findByIdAndUpdate(postId, { $push: { downvotes: user} })
-        console.log(editPost)
         res.json(editPost);
         }
     }
@@ -222,7 +215,6 @@ router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
     const newComment = await Comment.create({ creator: user, content: content, ofPost: postId })
     const editPost = await Post.findByIdAndUpdate(postId, {$push: {commentsId: newComment._id}}, {new: true})
-    console.log(editPost);
     res.json(newComment)
 });
 
@@ -234,7 +226,6 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
         const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image });
         const postId = newPost._id;
         const editUser = await User.findByIdAndUpdate(user, { $push: { myPosts: postId}})
-        console.log(newPost);
         res.json("Here you can make a post! Awesome, right?");
     }
     catch (err) {
@@ -248,7 +239,6 @@ router.delete("/:commentId/delete", isAuthenticated, async (req, res, next) => {
     try {
         const commentId = req.params.commentId;
         await Comment.findByIdAndDelete(commentId);
-        //console.log(commentId) 
     } catch (error) {
         console.log(error);
     }

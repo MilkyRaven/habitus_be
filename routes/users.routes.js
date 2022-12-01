@@ -7,8 +7,6 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 //Imported Models
 
 const User = require("../models/User.model")
-const Post = require("../models/Post.model")
-const Comment = require("../models/Comment.model")
 
 //get all users data
 
@@ -16,7 +14,6 @@ router.get("/all", isAuthenticated, async (req, res, next) => {
 
     try {
         const findAllUsers = await User.find();
-        console.log(findAllUsers);
         res.json(findAllUsers);
     }
     catch (err) {
@@ -31,7 +28,6 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
 
     try {
         const findUser = await User.findById(user).populate("followers");
-        console.log(findUser);
         res.json(findUser);
     }
     catch (err) {
@@ -46,7 +42,6 @@ router.get("/following", isAuthenticated, async (req, res, next) => {
 
     try {
         const findUser = await User.findById(user).populate("following");
-        console.log(findUser);
         res.json(findUser);
     }
     catch (err) {
@@ -57,7 +52,6 @@ router.get("/following", isAuthenticated, async (req, res, next) => {
 //get mutuals
 router.get("/mutuals", isAuthenticated, async (req, res, next) => {
     const user = req.payload
-    // console.log(user);
         try {
         const mutuals = [];
         const followingArray = user.following;
@@ -67,30 +61,23 @@ router.get("/mutuals", isAuthenticated, async (req, res, next) => {
         
         //following
         for (let i = 0; i < followingArray.length; i++){
-            // console.log(followingArray[i]);
             const followingSearch = await User.findById(followingArray[i]);
             followingData.push(followingSearch)
-            // console.log("I'm following:", followingSearch);
         }
 
         //followers
         for (let i = 0; i < followersArray.length; i++){
             const followersSearch = await User.findById(followersArray[i]);
             followersData.push(followersSearch)
-            // console.log("Following me:", followersSearch);
         }
 
             followingData.map((follower)=> { 
-                console.log("this is the follower", follower._id)
                 followersData.map((following)=>{
-                    console.log("this is the following", following._id);
                     if (String(follower.id) === String(following.id)) {
                         return mutuals.push(following);
                     }
                 })
             })
-
-            console.log("mutuaaaals", mutuals);
         res.json(mutuals);
 
     } catch (error) {
@@ -104,7 +91,6 @@ router.get("/:userId", isAuthenticated, async (req, res, next) => {
 
     try {
         const findUser = await User.findById(req.params.userId).populate("myPosts");
-        console.log(findUser);
         res.json(findUser);
     }
     catch (err) {
