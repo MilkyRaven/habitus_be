@@ -1,7 +1,7 @@
-# Project's name REST API
+# HabitUs
 ## Description
 
-This is a the backend repository for the React application `app's name`.
+This is the backend repository for HabtUs.
 
 ---
 
@@ -27,31 +27,6 @@ npm run dev
 ```bash
 npm run seed
 ```
----
-
-## Models
-
-### User
-
-Users in the database have the following properties:
-
-```js
-{
-  "username": String,
-  "email": String,
-  "hashedPassword": String
-}
-```
-
----
-
-## API endpoints and usage 
-
-| Action           | Method    | Endpoint             | Req.body                        | Private/Public |
-|------------------|-----------|----------------------|---------------------------------|-----------------|
-| SIGN UP user     | POST      | /api/v1/auth/signup  | { username, email, password }   |    Public |                 
-| LOG IN user      | POST      | /api/v1/auth/login   | { email, password }             |    Public |                  
-| GET logged in user   | GET     | /api/v1/auth/me    |   | Private |
 
 ---
 
