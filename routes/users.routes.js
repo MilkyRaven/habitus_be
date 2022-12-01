@@ -10,7 +10,7 @@ const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
-//get all users
+//get all users data
 
 router.get("/all", isAuthenticated, async (req, res, next) => {
 
