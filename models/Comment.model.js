@@ -15,7 +15,6 @@ const commentSchema = new Schema(
     ofComment: {
       type: Schema.Types.ObjectId, ref: 'Comment' 
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
