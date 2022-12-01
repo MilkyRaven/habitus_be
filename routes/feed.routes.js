@@ -141,8 +141,6 @@ router.get("/:postId", async (req, res, next) => {
 
 //Save post
 
-//Save post
-
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
@@ -176,10 +174,14 @@ router.put("/:postId/upvote", isAuthenticated, async (req, res, next) => {
     try {
         const postId = req.params.postId
         const user = req.payload._id
-        await Post.findByIdAndUpdate(postId, { $pull: { upvotes: user} })
+        //await Post.findByIdAndUpdate(postId, { $pull: { upvotes: user} })
+
+        const findPost = await Post.findById(postId);
+        if (findPost.upvotes.indexOf(user) == -1) {
         const editPost = await Post.findByIdAndUpdate(postId, { $push: { upvotes: user} })
         console.log(editPost)
         res.json(editPost);
+        }
     }
     catch (err) {
         console.log(err)
@@ -191,10 +193,14 @@ router.put("/:postId/downvote", isAuthenticated, async (req, res, next) => {
     try {
         const postId = req.params.postId
         const user = req.payload._id
-        await Post.findByIdAndUpdate(postId, { $pull: { downvotes: user} })
+        //await Post.findByIdAndUpdate(postId, { $pull: { downvotes: user} })
+
+        const findPost = await Post.findById(postId);
+        if (findPost.downvotes.indexOf(user) == -1) {
         const editPost = await Post.findByIdAndUpdate(postId, { $push: { downvotes: user} })
         console.log(editPost)
-        res.json("upvoted");
+        res.json(editPost);
+        }
     }
     catch (err) {
         console.log(err)
