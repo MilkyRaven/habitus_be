@@ -149,9 +149,12 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
         const user = req.payload._id
-        await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
+        //if(user.mySavedPosts.includes(savedPostId)) {
+            //res.json("already saved") }
+        //await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
         const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } })
         console.log(editUser)
+        res.json(editUser)
     }
     catch (err) {
         console.log(err)
