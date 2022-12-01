@@ -130,19 +130,6 @@ router.get("/:postId", async (req, res, next) => {
 
 //Save post
 
-/* router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
-    try {
-        const savedPostId = req.params.postId
-        const user = req.payload._id
-        const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } }, { new: true })
-        console.log(editUser)
-    }
-    catch (err) {
-        console.log(err)
-    }
-}) */
-
-
 //Save post
 
 router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
@@ -153,7 +140,6 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
             //res.json("already saved") }
         //await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
         const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } })
-        console.log(editUser)
         res.json(editUser)
     }
     catch (err) {
