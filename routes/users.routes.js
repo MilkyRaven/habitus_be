@@ -10,6 +10,51 @@ const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
+//get all users
+
+router.get("/all", isAuthenticated, async (req, res, next) => {
+
+    try {
+        const findAllUsers = await User.find();
+        console.log(findAllUsers);
+        res.json(findAllUsers);
+    }
+    catch (err) {
+        console.log(err)
+    }
+});
+
+
+//get all our followers
+router.get("/followers", isAuthenticated, async (req, res, next) => {
+    const user = req.payload._id;
+
+    try {
+        const findUser = await User.findById(user).populate("followers");
+        console.log(findUser);
+        res.json(findUser);
+    }
+    catch (err) {
+        console.log(err)
+    }
+});
+
+//get all the users we follow
+router.get("/following", isAuthenticated, async (req, res, next) => {
+
+    const user = req.payload._id;
+
+    try {
+        const findUser = await User.findById(user).populate("following");
+        console.log(findUser);
+        res.json(findUser);
+    }
+    catch (err) {
+        console.log(err)
+    }
+});
+
+//get mutuals
 router.get("/mutuals", isAuthenticated, async (req, res, next) => {
     const user = req.payload
     // console.log(user);
@@ -67,11 +112,6 @@ router.get("/:userId", isAuthenticated, async (req, res, next) => {
     }
 });
 
-//get mutuals
-
-
-
-
 // /set following - active user adds visited user-id to Following-Array
 router.put("/:userId/set-following", isAuthenticated, async (req, res, next) => {
     const user = req.payload._id;
@@ -126,6 +166,9 @@ router.put("/:userId/unfollow", isAuthenticated, async (req, res, next) => {
 
     res.json({ currentUserData, userData })
 })
+
+
+
 
 
 module.exports = router;
