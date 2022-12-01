@@ -139,6 +139,7 @@ router.get("/:postId", async (req, res, next) => {
 
 //PUT routes
 
+//Save post
 
 //Save post
 
@@ -146,8 +147,54 @@ router.put("/:postId/save", isAuthenticated, async (req, res, next) => {
     try {
         const savedPostId = req.params.postId
         const user = req.payload._id
-        const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } }, { new: true })
+        //if(user.mySavedPosts.includes(savedPostId)) {
+            //res.json("already saved") }
+        //await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
+        const editUser = await User.findByIdAndUpdate(user, { $push: { mySavedPosts: savedPostId } })
+        res.json(editUser)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+//Unsave post
+router.put("/:postId/unsave", isAuthenticated, async (req, res, next) => {
+    try {
+        const savedPostId = req.params.postId
+        const user = req.payload._id
+        const editUser = await User.findByIdAndUpdate(user, { $pull: { mySavedPosts: savedPostId } })
         console.log(editUser)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+//Upvote post
+router.put("/:postId/upvote", isAuthenticated, async (req, res, next) => {
+    try {
+        const postId = req.params.postId
+        const user = req.payload._id
+        await Post.findByIdAndUpdate(postId, { $pull: { upvotes: user} })
+        const editPost = await Post.findByIdAndUpdate(postId, { $push: { upvotes: user} })
+        console.log(editPost)
+        res.json(editPost);
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+//Downvote post
+router.put("/:postId/downvote", isAuthenticated, async (req, res, next) => {
+    try {
+        const postId = req.params.postId
+        const user = req.payload._id
+        await Post.findByIdAndUpdate(postId, { $pull: { downvotes: user} })
+        const editPost = await Post.findByIdAndUpdate(postId, { $push: { downvotes: user} })
+        console.log(editPost)
+        res.json("upvoted");
     }
     catch (err) {
         console.log(err)
