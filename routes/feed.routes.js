@@ -226,8 +226,10 @@ router.post("/:postId/new-comment", isAuthenticated, async (req, res, next) => {
 router.post("/new-post", isAuthenticated, async (req, res, next) => {
     try {
         const user = req.payload._id;
+        const findUser = await User.findById(user);
+        const username = findUser.username;
         const { title, description, categories, type, image } = req.body;
-        const newPost = await Post.create({ creator: user, title: title, description: description, categories: categories, type: type, image: image });
+        const newPost = await Post.create({ creator: user, username: username, title: title, description: description, categories: categories, type: type, image: image });
         const postId = newPost._id;
         const editUser = await User.findByIdAndUpdate(user, { $push: { myPosts: postId}})
         res.json("Here you can make a post! Awesome, right?");
@@ -241,8 +243,10 @@ router.post("/new-post", isAuthenticated, async (req, res, next) => {
 
 router.delete("/:commentId/delete", isAuthenticated, async (req, res, next) => {
     try {
+        const user = req.payload._id;
         const commentId = req.params.commentId;
         await Comment.findByIdAndDelete(commentId);
+        await User.findByIdAndUpdate(user, { $pull: { myComments: commentId}})
     } catch (error) {
         console.log(error);
     }

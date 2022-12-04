@@ -4,6 +4,8 @@ const postSchema = new Schema(
   {
     creator: { type: Schema.Types.ObjectId, ref: 'User' 
     },
+    username: { type: Schema.Types.String, ref: 'User' 
+    },
     title: {
       type: String,
       required: [true, "A title is required"],
